@@ -47,7 +47,7 @@ const LandingPage = () => {
         Get Started
       </Button>
 
-      <div className="max-w-2xl w-full px-4 text-center space-y-4">
+      <div className="max-w-2xl w-full px-4 text-center space-y-6">
         <h2 className="text-3xl font-semibold text-center ">
           You're <span className="text-gray-500">three</span> easy steps away
           from launching your RAG API
