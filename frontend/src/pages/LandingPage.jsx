@@ -44,7 +44,7 @@ const LandingPage = () => {
         className="bg-black text-white hover:scale-110 active:scale-110 transition-all duration-150 px-10 py-6 text-lg rounded-md"
         asChild
       >
-        <Link to="/sign-up">Get Started</Link>
+        <Link to="/sign-in">Get Started</Link>
       </Button>
 
       <div className="max-w-2xl w-full px-4 text-center space-y-6">
