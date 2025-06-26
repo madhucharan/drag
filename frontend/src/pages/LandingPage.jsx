@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Upload, Globe, BrainCog } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const steps = [
   {
@@ -39,8 +40,11 @@ const LandingPage = () => {
         </p>
       </div>
 
-      <Button className="bg-black text-white hover:scale-110 active:scale-110 transition-all duration-150 px-10 py-6 text-lg rounded-md">
-        Get Started
+      <Button
+        className="bg-black text-white hover:scale-110 active:scale-110 transition-all duration-150 px-10 py-6 text-lg rounded-md"
+        asChild
+      >
+        <Link to="/sign-up">Get Started</Link>
       </Button>
 
       <div className="max-w-2xl w-full px-4 text-center space-y-6">

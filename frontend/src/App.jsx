@@ -4,15 +4,20 @@ import DashboardPage from "./pages/DashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import RootLayout from "./layouts/RootLayout";
 import HomePage from "./pages/HomePage";
-import SignInPage from "./pages/SignInPage";
-import SignUpPage from "./pages/SignUpPage";
+import AuthenticationPage from "./pages/AuthenticationPage";
 
 const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/sign-in" element={<SignInPage />} />
-        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route
+          path="/sign-in"
+          element={<AuthenticationPage type="sign-in" />}
+        />
+        <Route
+          path="/sign-up"
+          element={<AuthenticationPage type="sign-up" />}
+        />
         <Route element={<RootLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
