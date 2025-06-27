@@ -1,4 +1,3 @@
-// src/components/GenerateApiKeyDialog.jsx
 import {
   Dialog,
   DialogTrigger,
