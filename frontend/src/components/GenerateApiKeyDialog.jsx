@@ -46,7 +46,7 @@ const GenerateApiKeyDialog = () => {
   const handleCopy = () => {
     navigator.clipboard.writeText(apiKey);
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setTimeout(() => setCopied(false), 1500);
   };
 
   return (
