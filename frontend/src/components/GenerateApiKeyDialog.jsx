@@ -6,13 +6,13 @@ import {
   DialogTitle,
   DialogFooter,
   DialogDescription,
+  DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import ApiKeyDisplay from "./ApiKeyDisplay";
-import { DialogClose } from "@radix-ui/react-dialog";
 
 const GenerateApiKeyDialog = () => {
   const [open, setOpen] = useState(false);
