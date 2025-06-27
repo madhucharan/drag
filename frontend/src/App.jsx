@@ -5,6 +5,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import RootLayout from "./layouts/RootLayout";
 import HomePage from "./pages/HomePage";
 import AuthenticationPage from "./pages/AuthenticationPage";
+import ApiKeysPage from "./pages/ApiKeysPage";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route element={<RootLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="api-keys" element={<ApiKeysPage />} />
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
