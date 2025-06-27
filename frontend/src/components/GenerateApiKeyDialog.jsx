@@ -6,12 +6,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Copy, Check } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 import ApiKeyDisplay from "./ApiKeyDisplay";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 const GenerateApiKeyDialog = () => {
   const [open, setOpen] = useState(false);
@@ -39,7 +41,13 @@ const GenerateApiKeyDialog = () => {
       console.log("Key created:", { name: name || "secret key", apiKey });
     }
     setOpen(false);
-    resetDialog();
+    // resetDialog();
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(apiKey);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -57,11 +65,16 @@ const GenerateApiKeyDialog = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent>
-        <DialogHeader className="flex justify-between items-start">
+      <DialogContent
+        onCloseAutoFocus={() => {
+          resetDialog();
+        }}
+      >
+        <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             {!apiKey ? "Generate new API key" : "Copy your API key"}
           </DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
 
         {!apiKey ? (
@@ -85,9 +98,17 @@ const GenerateApiKeyDialog = () => {
             </div>
 
             <DialogFooter>
+              <DialogClose asChild>
+                <Button
+                  variant="outline"
+                  className="hover: cursor-pointer active:scale-98 transition-all duration-150"
+                >
+                  Cancel
+                </Button>
+              </DialogClose>
               <Button
                 type="submit"
-                className="bg-black text-white hover:bg-neutral-800 active:scale-98 transition-all duration-150 w-full"
+                className="bg-black text-white hover:bg-neutral-800 active:scale-98 transition-all duration-150 hover: cursor-pointer"
               >
                 Generate Key
               </Button>
@@ -105,16 +126,12 @@ const GenerateApiKeyDialog = () => {
             <ApiKeyDisplay
               keyValue={apiKey}
               copied={copied}
-              onCopy={() => {
-                navigator.clipboard.writeText(apiKey);
-                setCopied(true);
-                setTimeout(() => setCopied(false), 2000);
-              }}
+              onCopy={handleCopy}
             />
 
             <Button
               onClick={handleDone}
-              className="w-full bg-black text-white hover:bg-neutral-800 active:scale-98 transition-all duration-150"
+              className="w-full bg-black text-white hover:bg-neutral-800 active:scale-98 transition-all duration-150 hover: cursor-pointer"
             >
               Done
             </Button>
