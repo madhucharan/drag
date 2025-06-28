@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import { useState } from "react";
 import ApiKeyDisplay from "./ApiKeyDisplay";
 import { useApi } from "@/lib/useApi";
@@ -21,6 +21,7 @@ const GenerateApiKeyDialog = () => {
   const [name, setName] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [copied, setCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { makeRequest } = useApi();
 
@@ -32,16 +33,18 @@ const GenerateApiKeyDialog = () => {
   };
 
   const handleGenerate = async () => {
+    setLoading(true);
     try {
       const data = await makeRequest("keys/create", {
         method: "GET",
       });
-
       const { drag_api_key: key } = data;
       setApiKey(key);
       setStep("display");
     } catch (error) {
       console.error("Failed to generate API key:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -74,7 +77,12 @@ const GenerateApiKeyDialog = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent key={open ? "open" : "closed"}>
+      <DialogContent
+        forceMount
+        key={open ? "open" : "closed"}
+        onInteractOutside={(e) => loading && e.preventDefault()}
+        onEscapeKeyDown={(e) => loading && e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             {step === "form" ? "Generate new API key" : "Copy your API key"}
@@ -106,6 +114,7 @@ const GenerateApiKeyDialog = () => {
               <DialogClose asChild>
                 <Button
                   variant="outline"
+                  disabled={loading}
                   className="hover: cursor-pointer active:scale-98 transition-all duration-150"
                 >
                   Cancel
@@ -113,9 +122,17 @@ const GenerateApiKeyDialog = () => {
               </DialogClose>
               <Button
                 type="submit"
-                className="bg-black text-white hover:bg-neutral-800 active:scale-98 transition-all duration-150 hover: cursor-pointer"
+                disabled={loading}
+                className="bg-black text-white hover:bg-neutral-800 active:scale-98 transition-all duration-150 hover:cursor-pointer flex items-center gap-2"
               >
-                Generate Key
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Generating
+                  </>
+                ) : (
+                  "Generate Key"
+                )}
               </Button>
             </DialogFooter>
           </form>
