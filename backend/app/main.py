@@ -2,7 +2,7 @@ from typing import Union
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
-from app.routers import auth
+from app.routers import api_keys
 
 app = FastAPI()
 
@@ -14,14 +14,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(auth.router, prefix="/auth", tags=["auth"])
+app.include_router(api_keys.router, prefix="/keys", tags=["keys"])
 
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}

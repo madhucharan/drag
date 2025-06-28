@@ -32,6 +32,9 @@ dependencies = [
     { name = "clerk-backend-api" },
     { name = "fastapi", extra = ["standard"] },
     { name = "loguru" },
+    { name = "python-dotenv" },
+    { name = "starlette" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
@@ -39,6 +42,9 @@ requires-dist = [
     { name = "clerk-backend-api", specifier = ">=3.0.3" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.14" },
     { name = "loguru", specifier = ">=0.7.3" },
+    { name = "python-dotenv", specifier = ">=1.1.1" },
+    { name = "starlette", specifier = ">=0.46.2" },
+    { name = "uvicorn", specifier = ">=0.34.3" },
 ]
 
 [[package]]

@@ -8,4 +8,7 @@ dependencies = [
     "clerk-backend-api>=3.0.3",
     "fastapi[standard]>=0.115.14",
     "loguru>=0.7.3",
+    "python-dotenv>=1.1.1",
+    "starlette>=0.46.2",
+    "uvicorn>=0.34.3",
 ]

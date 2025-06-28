@@ -24,8 +24,7 @@ def authenticate_user(request: Request):
             ),
         )
 
-
-        return request_state.is_signed_in
+        return request_state.is_signed_in, request_state.payload.get("sub")
 
         # if not request_state.is_signed_in:
         #     raise HTTPException(status_code=401, detail="Invalid Credentials")

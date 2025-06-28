@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import ApiKeyDisplay from "./ApiKeyDisplay";
+import { useApi } from "@/lib/useApi";
 
 const GenerateApiKeyDialog = () => {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,8 @@ const GenerateApiKeyDialog = () => {
   const [apiKey, setApiKey] = useState("");
   const [copied, setCopied] = useState(false);
 
+  const { makeRequest } = useApi();
+
   const resetDialog = () => {
     setName("");
     setApiKey("");
@@ -28,13 +31,18 @@ const GenerateApiKeyDialog = () => {
     setStep("form");
   };
 
-  const handleGenerate = () => {
-    const dummyKey =
-      "sk-proj-" +
-      Math.random().toString(36).slice(2, 20) +
-      "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-    setApiKey(dummyKey);
-    setStep("display");
+  const handleGenerate = async () => {
+    try {
+      const data = await makeRequest("keys/create", {
+        method: "GET",
+      });
+
+      const { drag_api_key: key } = data;
+      setApiKey(key);
+      setStep("display");
+    } catch (error) {
+      console.error("Failed to generate API key:", error);
+    }
   };
 
   const handleDone = () => {
