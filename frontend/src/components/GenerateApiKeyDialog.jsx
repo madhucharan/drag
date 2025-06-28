@@ -16,6 +16,7 @@ import ApiKeyDisplay from "./ApiKeyDisplay";
 
 const GenerateApiKeyDialog = () => {
   const [open, setOpen] = useState(false);
+  const [step, setStep] = useState("form"); //form || display
   const [name, setName] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [copied, setCopied] = useState(false);
@@ -24,6 +25,7 @@ const GenerateApiKeyDialog = () => {
     setName("");
     setApiKey("");
     setCopied(false);
+    setStep("form");
   };
 
   const handleGenerate = () => {
@@ -32,15 +34,15 @@ const GenerateApiKeyDialog = () => {
       Math.random().toString(36).slice(2, 20) +
       "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
     setApiKey(dummyKey);
+    setStep("display");
   };
 
   const handleDone = () => {
     if (apiKey) {
-      // Later: persist the key (backend/local state)
       console.log("Key created:", { name: name || "secret key", apiKey });
     }
     setOpen(false);
-    // resetDialog();
+    resetDialog();
   };
 
   const handleCopy = () => {
@@ -54,7 +56,7 @@ const GenerateApiKeyDialog = () => {
       open={open}
       onOpenChange={(val) => {
         setOpen(val);
-        if (!val) resetDialog();
+        if (!val) resetDialog(); // Reset on any close
       }}
     >
       <DialogTrigger asChild>
@@ -64,19 +66,15 @@ const GenerateApiKeyDialog = () => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent
-        onCloseAutoFocus={() => {
-          resetDialog();
-        }}
-      >
+      <DialogContent key={open ? "open" : "closed"}>
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
-            {!apiKey ? "Generate new API key" : "Copy your API key"}
+            {step === "form" ? "Generate new API key" : "Copy your API key"}
           </DialogTitle>
-          <DialogDescription></DialogDescription>
+          <DialogDescription />
         </DialogHeader>
 
-        {!apiKey ? (
+        {step === "form" ? (
           <form
             onSubmit={(e) => {
               e.preventDefault();
