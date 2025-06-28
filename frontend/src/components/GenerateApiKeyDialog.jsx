@@ -78,7 +78,7 @@ const GenerateApiKeyDialog = () => {
       </DialogTrigger>
 
       <DialogContent
-        forceMount
+        className={loading && "[&>button]:hidden"} // hide x button while loading
         key={open ? "open" : "closed"}
         onInteractOutside={(e) => loading && e.preventDefault()}
         onEscapeKeyDown={(e) => loading && e.preventDefault()}
