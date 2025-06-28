@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Request
-import uuid
 import time
 from app.utils.clerk import authenticate_user
 
