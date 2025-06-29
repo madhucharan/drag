@@ -31,10 +31,8 @@ class APIKey(Base):
 
     key_id = Column(String, primary_key=True)  # Unkey's ID as primary key
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
-    prefix = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
     revoked = Column(Boolean, default=False)
 
     user = relationship("User", back_populates="api_keys")
-
-

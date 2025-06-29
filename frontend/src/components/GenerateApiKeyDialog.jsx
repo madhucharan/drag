@@ -39,7 +39,7 @@ const GenerateApiKeyDialog = () => {
         method: "POST",
         body: JSON.stringify({ name }),
       });
-      const { drag_api_key: key } = data;
+      const { key, key_id, created_at } = data;
       setApiKey(key);
       setStep("display");
     } catch (error) {

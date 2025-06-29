@@ -7,16 +7,17 @@ class APIKeyCreate(BaseModel):
     name: Optional[str] = None
 
 
-class APIKeyResponse(BaseModel):
+class APIKeyBase(BaseModel):
     key_id: str
     key: str
-    api_id: str
+
+
+class APIKeyResponse(APIKeyBase):
     created_at: datetime
 
 
 class APIKeyInDB(BaseModel):
     key_id: str
-    prefix: str
     created_at: datetime
     revoked: bool
 
