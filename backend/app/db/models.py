@@ -19,6 +19,3 @@ class User(Base):
     name = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, default=datetime.now())
-
-
-

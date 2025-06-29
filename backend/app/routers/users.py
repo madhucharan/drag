@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from loguru import logger
 from sqlalchemy.orm import Session
 from app.db.models import User
 from app.db.database import get_db
@@ -10,20 +11,30 @@ router = APIRouter()
 @router.post("/")
 def create_user(user: UserCreateModel, db: Session = Depends(get_db)):
 
-    user_exists = db.query(User).filter(User.clerk_id == user.clerk_id).first()
+    try:
+        user_exists = db.query(User).filter(User.clerk_id == user.clerk_id).first()
 
-    if user_exists:
+        if user_exists:
+            raise HTTPException(
+                status_code=status.HTTP_409_CONFLICT, detail="User already exists"
+            )
+
+        new_user = User(email=user.email, clerk_id=user.clerk_id, name=user.name)
+
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+
+        return {"message": "User created successfully", "user_id": new_user.id}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error creating user - {e}")
         raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT, detail="User already exists"
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Something went wrong. Please try again",
         )
-
-    new_user = User(email=user.email, clerk_id=user.clerk_id, name=user.name)
-
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
-    return {"message": "User created successfully", "user_id": new_user.id}
 
 
 @router.get("/")
