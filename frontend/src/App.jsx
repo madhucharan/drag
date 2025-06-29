@@ -12,11 +12,11 @@ const App = () => {
     <>
       <Routes>
         <Route
-          path="/sign-in"
+          path="/sign-in/*"
           element={<AuthenticationPage type="sign-in" />}
         />
         <Route
-          path="/sign-up"
+          path="/sign-up/*"
           element={<AuthenticationPage type="sign-up" />}
         />
         <Route element={<RootLayout />}>

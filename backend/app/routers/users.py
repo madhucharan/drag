@@ -1,3 +1,4 @@
+from email import message
 from fastapi import APIRouter, Depends, HTTPException, status
 from loguru import logger
 from sqlalchemy.orm import Session
@@ -25,7 +26,11 @@ def create_user(user: UserCreateModel, db: Session = Depends(get_db)):
         db.commit()
         db.refresh(new_user)
 
-        return {"message": "User created successfully", "user_id": new_user.id}
+        return {
+            "status": "success",
+            "message": "User created successfully",
+            "data": {"user_id": new_user.id},
+        }
 
     except HTTPException:
         raise

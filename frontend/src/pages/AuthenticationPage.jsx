@@ -15,14 +15,14 @@ const AuthenticationPage = ({ type }) => {
               routing="path"
               path="/sign-in"
               signUpUrl="/sign-up"
-              forceRedirectUrl="/"
+              // forceRedirectUrl="/"
             />
           ) : (
             <SignUp
               routing="path"
               path="/sign-up"
               signInUrl="/sign-in"
-              forceRedirectUrl="/"
+              // forceRedirectUrl="/"
             />
           )}
         </div>
