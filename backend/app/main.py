@@ -1,4 +1,5 @@
 from typing import Union
+from dotenv import load_dotenv
 from app.db.models import Base
 from app.db.database import engine
 
@@ -7,6 +8,9 @@ from fastapi import FastAPI
 from app.routers import keys
 from app.routers import users
 from app.routers import webhooks
+
+
+load_dotenv()
 
 app = FastAPI()
 

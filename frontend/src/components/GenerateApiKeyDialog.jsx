@@ -35,8 +35,9 @@ const GenerateApiKeyDialog = () => {
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const data = await makeRequest("keys/create", {
-        method: "GET",
+      const data = await makeRequest("keys/", {
+        method: "POST",
+        body: JSON.stringify({ name }),
       });
       const { drag_api_key: key } = data;
       setApiKey(key);
