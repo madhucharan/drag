@@ -18,6 +18,7 @@ class APIKeyResponse(APIKeyBase):
 
 class APIKeyInDB(BaseModel):
     key_id: str
+    key_name: Optional[str] = None
     created_at: datetime
     updated_at: datetime
     revoked: bool

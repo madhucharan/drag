@@ -10,6 +10,8 @@ from app.db.database import get_db
 from app.db.models import User, APIKey
 from unkey_py import Unkey
 
+from backend.app.schemas import keys
+
 load_dotenv()
 
 router = APIRouter()
@@ -94,11 +96,17 @@ async def list_api_keys(request: Request, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
 
-    return (
+    keys = (
         db.query(APIKey)
         .filter(APIKey.user_id == user.id, APIKey.revoked == False)
         .all()
     )
+
+    return {
+        "status": "success",
+        "message": "API keys fetched successfully",
+        "data": {"keys": keys},
+    }
 
 
 @router.get("/{key_id}", response_model=APIKeyInDB)

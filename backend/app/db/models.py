@@ -30,6 +30,7 @@ class APIKey(Base):
     __tablename__ = "api_keys"
 
     key_id = Column(String, primary_key=True)  # Unkey's ID as primary key
+    key_name = Column(String, nullable=True)
     user_id = Column(String, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.now())
     updated_at = Column(DateTime, default=datetime.now())
