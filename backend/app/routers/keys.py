@@ -23,6 +23,12 @@ async def create_api_key(
 ):
     is_signed_in, clerk_user_id = authenticate_user(request)
 
+    if not unkey_client:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Unkey client error",
+        )
+
     if not is_signed_in:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Unauthorized"
