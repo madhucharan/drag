@@ -10,8 +10,6 @@ from app.db.database import get_db
 from app.db.models import User, APIKey
 from unkey_py import Unkey
 
-from backend.app.schemas import keys
-
 load_dotenv()
 
 router = APIRouter()
@@ -67,6 +65,7 @@ async def create_api_key(
 
     db_key = APIKey(
         key_id=res.object.key_id,
+        key_name=key_data.name if key_data.name else None,
         user_id=user.id,
         created_at=datetime.now(),
         updated_at=datetime.now(),
@@ -96,17 +95,13 @@ async def list_api_keys(request: Request, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
 
-    keys = (
+    api_keys = (
         db.query(APIKey)
         .filter(APIKey.user_id == user.id, APIKey.revoked == False)
         .all()
     )
 
-    return {
-        "status": "success",
-        "message": "API keys fetched successfully",
-        "data": {"keys": keys},
-    }
+    return api_keys
 
 
 @router.get("/{key_id}", response_model=APIKeyInDB)
@@ -160,7 +155,11 @@ async def revoke_api_key(key_id: str, request: Request, db: Session = Depends(ge
         )
 
     try:
-        unkey_client.keys.revoke(key_id)
+        unkey_client.keys.delete(
+            request={
+                "key_id": key_id,
+            }
+        )
     except Exception as e:
         logger.error(f"Unkey revoke failed: {e}")
         raise HTTPException(
