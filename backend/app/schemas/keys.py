@@ -19,6 +19,7 @@ class APIKeyResponse(APIKeyBase):
 class APIKeyInDB(BaseModel):
     key_id: str
     created_at: datetime
+    updated_at: datetime
     revoked: bool
 
     model_config = {"from_attributes": True}

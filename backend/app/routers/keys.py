@@ -41,7 +41,7 @@ async def create_api_key(
                 "api_id": os.getenv("UNKEY_API_ID"),
                 "owner_id": user.id,
                 "external_id": user.id,
-                "name": {"name": key_data.name} if key_data.name else None,
+                "name": key_data.name if key_data.name else None,
             }
         )
     except Exception as e:
