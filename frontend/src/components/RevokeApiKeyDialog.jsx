@@ -19,24 +19,27 @@ const RevokeApiKeyDialog = () => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: () =>
-      makeRequest(`keys/${selectedKeyId}`, {
-        method: "DELETE",
-      }),
+    mutationFn: (keyId) => makeRequest(`keys/${keyId}`, { method: "DELETE" }),
     onSuccess: () => {
-      queryClient.invalidateQueries(["api-keys"]);
-      closeRevoke();
+      queryClient.invalidateQueries({ queryKey: ["api-keys"] }).then(() => {
+        // Wait for invalidation to complete
+        console.log("invalidated revokation");
+        setLoading(false);
+        closeRevoke();
+      });
     },
     onError: (err) => {
       console.error("Failed to revoke:", err);
-      // optionally show toast
+      setLoading(false);
     },
-    onSettled: () => setLoading(false),
+    // Remove onSettled completely
   });
 
   const handleRevoke = () => {
+    if (!selectedKeyId) return;
     setLoading(true);
-    mutation.mutate();
+    // 4) pass selectedKeyId explicitly here
+    mutation.mutate(selectedKeyId);
   };
 
   return (

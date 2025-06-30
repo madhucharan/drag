@@ -132,7 +132,7 @@ async def get_api_key(key_id: str, request: Request, db: Session = Depends(get_d
     return key
 
 
-@router.delete("/{key_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{key_id}")
 async def revoke_api_key(key_id: str, request: Request, db: Session = Depends(get_db)):
     is_signed_in, clerk_user_id = authenticate_user(request)
     if not is_signed_in:

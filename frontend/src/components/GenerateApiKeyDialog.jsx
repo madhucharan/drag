@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2, Plus } from "lucide-react";
 import { useApiKeyStore } from "@/store/ApiKeyStore";
 import { useApi } from "@/lib/useApi";
+import { useQueryClient } from "@tanstack/react-query";
 
 const GenerateApiKeyDialog = () => {
   const {
@@ -28,22 +29,24 @@ const GenerateApiKeyDialog = () => {
 
   const { makeRequest } = useApi();
 
+  const queryClient = useQueryClient();
+
   const handleGenerate = async () => {
     try {
       setLoading(true);
-
       const data = await makeRequest("keys/", {
         method: "POST",
         body: JSON.stringify({ name }),
       });
-
       const { key } = data;
       setApiKey(key);
       closeGenerate();
       openDisplay(key);
+
+      // Invalidate the keys query so the table refreshes
+      queryClient.invalidateQueries({ queryKey: ["api-keys"] });
     } catch (err) {
       console.error("Failed to generate key:", err);
-      // (Optional) toast or error feedback
     } finally {
       setLoading(false);
     }
