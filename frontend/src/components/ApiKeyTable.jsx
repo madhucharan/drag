@@ -6,57 +6,64 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { useApiKeys } from "@/hooks/useApiKeys";
+import { useApiKeyStore } from "@/store/ApiKeyStore";
 import { format } from "date-fns";
+import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-const maskKeyId = (keyId) => {
-  if (!keyId.startsWith("drag-sk-")) return keyId;
+const ApiKeyTable = () => {
+  const { data: apiKeys, isLoading, isError } = useApiKeys();
+  const { openRevoke } = useApiKeyStore();
 
-  const secret = keyId.replace("drag_sk_", "");
-  return `drag_sk_...${secret.slice(-3)}`;
-};
-
-const ApiKeyTable = ({ apiKeys, onRevoke }) => {
-  console.log("apiKeys inside table", apiKeys);
-  if (!apiKeys?.length) {
-    return <p className="text-sm text-muted-foreground"> No API keys found</p>;
+  if (isLoading)
+    return <p className="text-sm text-muted-foreground">Loading keys...</p>;
+  if (isError)
+    return <p className="text-sm text-red-500">Failed to load API keys.</p>;
+  if (!apiKeys || apiKeys.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">No API keys created yet.</p>
+    );
   }
+
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Name</TableHead>
-          <TableHead>Key ID</TableHead>
-          <TableHead>Created</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {apiKeys.map((key) => {
-          return (
+    <div className="mt-6">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Name</TableHead>
+            <TableHead>Key ID</TableHead>
+            <TableHead>Created At</TableHead>
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {apiKeys.map((key) => (
             <TableRow key={key.key_id}>
-              <TableCell>{key.key_name || "Untitled"}</TableCell>
-              <TableCell className="font-mono text-xs">
-                {maskKeyId(key.key_id)}
+              <TableCell>{key.key_name || "-"}</TableCell>
+              <TableCell className="font-mono text-sm text-muted-foreground">
+                {key.key_id.slice(0, 8)}...
               </TableCell>
               <TableCell>
-                {format(new Date(key.created_at), "yyyy-MM-dd")}
+                {format(new Date(key.created_at), "yyyy-MM-dd HH:mm")}
               </TableCell>
               <TableCell className="text-right">
                 <Button
-                  variant="ghost"
                   size="icon"
-                  onClick={() => onRevoke(key.key_id)}
+                  variant="ghost"
+                  onClick={() => openRevoke(key.key_id)}
+                  className="text-red-500 hover:bg-red-100 active:scale-98 transition-all duration-150 hover:cursor-pointer rounded-full"
                 >
-                  <Trash2 className="w-4 h-4 text-red-500" />
+                  <Trash2 className="w-4 h-4" />
+                  <span className="sr-only">Revoke</span>
                 </Button>
               </TableCell>
             </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 };
 

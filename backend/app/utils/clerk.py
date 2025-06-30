@@ -19,6 +19,8 @@ def authenticate_user(request: Request):
                     "http://localhost:5173",
                     "http://localhost:5174",
                     "http://localhost:5175",
+                    "http://localhost:5176",
+                    "http://localhost:5177",
                 ],
                 jwt_key=os.getenv("JWT_KEY"),
             ),
