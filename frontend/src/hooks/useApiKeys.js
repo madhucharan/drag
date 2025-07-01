@@ -7,7 +7,7 @@ export const useApiKeys = () => {
   return useQuery({
     queryKey: ["api-keys"],
     queryFn: () => {
-      console.log("Fetching keys...");
+      // console.log("Fetching keys...");
       return makeRequest("keys/");
     },
   });
