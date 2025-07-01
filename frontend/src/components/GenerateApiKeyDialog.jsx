@@ -91,6 +91,7 @@ const GenerateApiKeyDialog = () => {
           <div className="flex justify-end gap-2 pt-4">
             <Button
               variant="outline"
+              disabled={loading}
               onClick={closeGenerate}
               className="hover:cursor-pointer active:scale-98 transition-all duration-150"
             >
