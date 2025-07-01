@@ -13,6 +13,7 @@ import { Loader2, Plus } from "lucide-react";
 import { useApiKeyStore } from "@/store/ApiKeyStore";
 import { useApi } from "@/lib/useApi";
 import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const GenerateApiKeyDialog = () => {
   const {
@@ -42,11 +43,17 @@ const GenerateApiKeyDialog = () => {
       setApiKey(key);
       closeGenerate();
       openDisplay(key);
+      toast.success("API key generated successfully", {
+        duration: 2500,
+      });
 
-      // Invalidate the keys query so the table refreshes
       queryClient.invalidateQueries({ queryKey: ["api-keys"] });
     } catch (err) {
       console.error("Failed to generate key:", err);
+      toast.error("Failed to generate key", {
+        duration: 2500,
+        className: "bg-red-600 text-white",
+      });
     } finally {
       setLoading(false);
     }

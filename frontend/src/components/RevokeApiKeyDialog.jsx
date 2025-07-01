@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useApiKeyStore } from "@/store/ApiKeyStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useApi } from "@/lib/useApi";
+import { toast } from "sonner";
 
 const RevokeApiKeyDialog = () => {
   const { isRevokeOpen, selectedKeyId, closeRevoke, setLoading, loading } =
@@ -22,14 +23,19 @@ const RevokeApiKeyDialog = () => {
     mutationFn: (keyId) => makeRequest(`keys/${keyId}`, { method: "DELETE" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["api-keys"] }).then(() => {
-        // Wait for invalidation to complete
-        console.log("invalidated revokation");
+        toast.success("API key revoked successfully", {
+          duration: 2500,
+        });
+        // console.log("invalidated revokation");
         setLoading(false);
         closeRevoke();
       });
     },
     onError: (err) => {
       console.error("Failed to revoke:", err);
+      toast.error("Failed to revoke key", {
+        duration: 2500,
+      });
       setLoading(false);
     },
     // Remove onSettled completely
@@ -38,7 +44,6 @@ const RevokeApiKeyDialog = () => {
   const handleRevoke = () => {
     if (!selectedKeyId) return;
     setLoading(true);
-    // 4) pass selectedKeyId explicitly here
     mutation.mutate(selectedKeyId);
   };
 
