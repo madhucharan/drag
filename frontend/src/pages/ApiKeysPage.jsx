@@ -26,7 +26,6 @@ const ApiKeysPage = () => {
           </p>
         </div>
 
-        <hr className="mt-6 border-t border-muted" />
         <ApiKeyTable />
       </div>
     </>
