@@ -38,7 +38,6 @@ const RevokeApiKeyDialog = () => {
       });
       setLoading(false);
     },
-    // Remove onSettled completely
   });
 
   const handleRevoke = () => {
