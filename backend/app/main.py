@@ -26,7 +26,7 @@ app.add_middleware(
 )
 
 app.include_router(keys.router, prefix="/keys", tags=["keys"])
-app.include_router(users.router, prefix="/users", tags=["users"])
+# app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(webhooks.router, prefix="/webhooks", tags=["webhooks"])
 
 
